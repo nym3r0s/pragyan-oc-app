@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('user_gcmid',300);
             $table->string('user_phone',20);
             $table->string('user_type',20);
+            $table->timestamps();
         });
     }
 

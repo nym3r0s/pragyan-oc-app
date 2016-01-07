@@ -16,52 +16,46 @@ class JSONResponse
 	public static function response($status_code, $data=NULL)
 	{
 		// Initialize the result array
-		$json_result = array("status_code" => 0,"message" => NULL);
+		$json_result = array("status_code" => 400,"message" => "Bad Request");
+		
 		// Invalid Authentication
-		if( $status_code === 0 )
+		if( $status_code === 401 )
 		{
-			$json_result['status_code']	= 0;
+			$json_result['status_code']	= $status_code;
 			$json_result['message']		= "Username or Password Incorrect";
 		}
-		// Succesful Authentication for use in login
-		else if( $status_code === 1 )
+		
+		// Succesful Response
+		else if( $status_code === 200 || $status_code === 201 || $status_code === 304 )
 		{
-			$json_result['status_code']	= 1;
-			$json_result['message']		= "Successful Authentication";
-		}
-		// Successful Authentication + data response
-		else if( $status_code === 2 )
-		{
-			$json_result['status_code']	= 2;
+			$json_result['status_code']	= $status_code;
 			
-			// FailSafe
-			$json_result['message'] = NULL;
-			
-			// If data is not null
-			if($data !== NULL)
-			{
-				// Takes care of both JSONObject and JSONArray
-				$json_result['message'] = $data;
-			}
-			// NULL Data
+			if($data == NULL)
+				$json_result['message']	= "Successful Authentication";
 			else
-			{
-				$json_result['message'] = $data;
-			}
+				$json_result['message']	= $data;
 		}
-		// Failsafe for an invalid request
+
+		// Bad Request
+		else if( $status_code === 400 )
+		{
+			$json_result['status_code']	= 400;
+
+			if($data === NULL)
+				$json_result['message']= "Bad Request";	
+			else
+				$json_result['message']= $data;	
+		}
+
+		// Failsafe for an invalid/bad request
 		else
 		{
-			$json_result['status_code']	= 3;
+			$json_result['status_code']	= 400;
+
 			if($data === NULL)
-				$json_result['message']= "Invalid Request";	
+				$json_result['message']= "Bad Request";	
 			else
-			{
-				if(is_array($data))
-					$json_result['message']= json_encode($data);	
-				else
-					$json_result['message']= $data;
-			}
+				$json_result['message']= $data;
 		}
 		
 		// Log the result
@@ -69,7 +63,7 @@ class JSONResponse
 		Log::info($encoded_json);
 
 		//Return JSON response.
-		return response()->json($json_result);
+		return response()->json($json_result,$json_result['status_code']);
 	}
 }
 ?>

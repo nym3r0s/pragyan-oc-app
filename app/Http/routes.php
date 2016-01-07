@@ -18,5 +18,5 @@
 $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', function ($api) {
-	$api->get('/test', 'App\Http\Controllers\TestController@index');
+	$api->get('/test', 'App\Http\Controllers\GcmController@register');
 });

@@ -17,6 +17,7 @@ class CreateTaskTable extends Migration
             $table->string('task_name',20);
             $table->string('task_completed',20);
             $table->integer('team_id');
+            $table->timestamps();
         });
 
         Schema::table('tasks', function(Blueprint $table) {

@@ -1,5 +1,5 @@
 <?php
-namespace App\CustomClasses;
+namespace App\Helpers;
 use mail;
 
 // Constants

@@ -1,6 +1,6 @@
 <?php
-namespace App\CustomClasses;
-use App\CustomClasses\IMAPAuth;
+namespace App\Helpers;
+use App\Helpers\IMAPAuth;
 use App\User;
 
 class FestAuth
