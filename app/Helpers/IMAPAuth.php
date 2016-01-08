@@ -3,27 +3,10 @@ namespace App\Helpers;
 
 use imap;
 
-
 class IMAPAuth
 {
-	public static function nittauth($user_roll, $user_pass)
+	public static function auth($user_roll, $user_pass)
 	{
-		// $imap_server_address="webmail.nitt.edu";
-	 //    $imap_port="993";
-
-	 //    $mbox = @imap_open("{webmail.nitt.edu:993/imap/ssl/novalidate-cert}INBOX", $user_roll, $user_pass,NULL,0);
-	    
-	 //    // Clears the error stack. Else the app crashes
-	 //    $imap_errors_array = imap_errors();
-	 //    $imap_alerts_array = imap_alerts();
-
-	 //    if($mbox)
-	 //    {
-	 //    	imap_close($mbox);
-	 //    	return true;
-	 //    }
-	 //    else
-	 //    	return false;
 		$username = $user_roll;
 		$password = $user_pass;
 
