@@ -38,5 +38,6 @@ $api->version('v1', ['middleware' => 'userauth'], function ($api) {
 	$api->post('/task/create','App\Http\Controllers\TaskController@createTask');
 	$api->post('/task/update','App\Http\Controllers\TaskController@updateTask');
 	$api->post('/task/status/update','App\Http\Controllers\TaskController@updateTaskStatus');
+	$api->post('/task/all','App\Http\Controllers\TaskController@getAllTasks');
 
 });
