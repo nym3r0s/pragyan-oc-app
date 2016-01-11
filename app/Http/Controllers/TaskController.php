@@ -96,6 +96,7 @@ class TaskController extends Controller
 
     	
     	$task = Task::where('task_id','=',$task_id)
+        			->where('enabled','=',true)
     				->first();
     	if($task == NULL)
     	{
@@ -152,6 +153,7 @@ class TaskController extends Controller
 
 
     	$task = Task::where('task_id','=',$task_id)
+        			->where('enabled','=',true)
     				->first();
     	if($task == NULL)
     	{
@@ -192,6 +194,7 @@ class TaskController extends Controller
     	$task_list = Assigned::where('user_id','=',$user_id)
     						->leftJoin('tasks','assigned.task_id','=','tasks.task_id')
     						->leftJoin('teams','tasks.team_id','=','teams.team_id')
+		        			->where('tasks.enabled','=',true)
     						->select($exported_fields)
     						->get();
 
@@ -215,6 +218,7 @@ class TaskController extends Controller
 
 
         $task = Task::where('task_id','=',$task_id)
+        			->where('enabled','=',true)
         		    ->first();
 
     	if($task == NULL)
@@ -243,5 +247,30 @@ class TaskController extends Controller
 		}	
 
 		return JSONResponse::response(200,true);
+    }
+    public function deleteTask(Request $request)
+    {
+    	$user_roll	= $request->input('user_roll');
+        $task_id = $request->input('task_id');
+
+    	if(!CheckLevel::check(2,NULL,$user_roll))
+    	{
+    		return JSONResponse::response(401);
+    	}
+
+
+        $task = Task::where('task_id','=',$task_id)
+        			->where('enabled','=',true)
+        		    ->first();
+
+    	if($task == NULL)
+    	{
+    		return JSONResponse::response(400);
+    	}
+
+    	$task->enabled = false;
+    	$task->save();
+
+    	return JSONResponse::response(200,true);
     }
 }
