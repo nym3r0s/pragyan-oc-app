@@ -39,5 +39,6 @@ $api->version('v1', ['middleware' => 'userauth'], function ($api) {
 	$api->post('/task/update','App\Http\Controllers\TaskController@updateTask');
 	$api->post('/task/status/update','App\Http\Controllers\TaskController@updateTaskStatus');
 	$api->post('/task/all','App\Http\Controllers\TaskController@getAllTasks');
+	$api->post('/task/assign','App\Http\Controllers\TaskController@assignPeople');
 
 });

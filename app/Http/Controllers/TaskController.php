@@ -199,4 +199,49 @@ class TaskController extends Controller
 
     	return JSONResponse::response(200,$task_list);
     }
+
+    public function assignPeople(Request $request)
+    {
+    	$user_roll	= $request->input('user_roll');
+        $task_id = $request->input('task_id');
+
+        $assigned_list = $request->input('assigned_list');
+        $assigned_ids = explode(',', $assigned_list);
+
+    	if(!CheckLevel::check(2,NULL,$user_roll))
+    	{
+    		return JSONResponse::response(401);
+    	}
+
+
+        $task = Task::where('task_id','=',$task_id)
+        		    ->first();
+
+    	if($task == NULL)
+    	{
+    		return JSONResponse::response(400);
+    	}
+
+        $user_list = User::leftJoin('team_members','team_members.user_id','=','users.user_id')
+        				 ->whereIn('users.user_id',$assigned_ids)
+        				 ->where('team_members.team_id','=',$task->team_id)
+        				 ->get();
+
+    	if(count($user_list) != count($assigned_ids))
+    	{
+    		return JSONResponse::response(400);
+    	}
+
+    	foreach ($user_list as $key => $user)
+    	{
+    		// echo "\ninserting".$task_id." ".$user->user_id;
+    		$a = new Assigned;
+    		$a->task_id = $task_id;
+    		$a->user_id = $user->user_id;
+    		$success = $a->save();
+    		// echo "\n".$success;
+		}	
+
+		return JSONResponse::response(200,true);
+    }
 }
