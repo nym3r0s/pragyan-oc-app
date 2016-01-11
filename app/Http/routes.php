@@ -31,4 +31,8 @@ $api->version('v1', ['middleware' => 'userauth'], function ($api) {
 	$api->post('/profile/getdetails', 'App\Http\Controllers\UserController@profileGetDetails');
 
 	$api->post('/task/chat/read','App\Http\Controllers\ChatController@getTaskMessages');
+	$api->post('/task/chat/create','App\Http\Controllers\ChatController@createTaskMessages');
+
+	$api->post('/task/create','App\Http\Controllers\TaskController@createTask');
+
 });
