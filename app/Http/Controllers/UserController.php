@@ -11,7 +11,7 @@ use App\Helpers\LDAPAuth;
 use App\Helpers\IMAPAuth;
 use App\User;
 
-class UserLoginController extends Controller
+class UserController extends Controller
 {
     public function login(Request $request)
     {

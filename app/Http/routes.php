@@ -18,10 +18,15 @@
 $api = app('Dingo\Api\Routing\Router');
 
 // The open and unauth routes
+
 $api->version('v1', function ($api) {
-	$api->post('/login', 'App\Http\Controllers\UserLoginController@login');
+	$api->post('/login', 'App\Http\Controllers\UserController@login');
 });
-// The 
+
+// The routes which will need authentication in the form of client secret
+
 $api->version('v1', ['middleware' => 'userauth'], function ($api) {
-	$api->get('/test', 'App\Http\Controllers\GcmController@register');
+
+	$api->get('/gcm/register', 'App\Http\Controllers\GcmController@register');
+
 });
