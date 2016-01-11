@@ -28,7 +28,9 @@ $api->version('v1', function ($api) {
 $api->version('v1', ['middleware' => 'userauth'], function ($api) {
 
 	$api->post('/gcm/register', 'App\Http\Controllers\GcmController@register');
+
 	$api->post('/profile/getdetails', 'App\Http\Controllers\UserController@profileGetDetails');
+	$api->post('/profile/getalldetails', 'App\Http\Controllers\UserController@profileGetAllDetails');
 
 	$api->post('/task/chat/read','App\Http\Controllers\ChatController@getTaskMessages');
 	$api->post('/task/chat/create','App\Http\Controllers\ChatController@createTaskMessages');
