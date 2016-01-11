@@ -12,9 +12,23 @@ use App\User;
 
 class GcmController extends Controller
 {
-    public function register(Request $request)
-    {
-    	$gcmId = $request->input("gcmId");
-    	$roll = $request->input("roll");
-    }
+	public function register(Request $request)
+	{
+		$user_gcmid = $request->input("user_gcmid");
+		$user_roll = $request->input("user_roll");
+
+		$user = User::where('user_roll','=',$user_roll)
+					->first();
+
+		if($user == NULL)
+		{
+			return JSONResponse::response(400);
+		}
+
+		$user->user_gcmid = $user_gcmid;
+		$user->save();
+
+		return JSONResponse::response(200,true);
+
+	}
 }
