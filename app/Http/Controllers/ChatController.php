@@ -34,14 +34,8 @@ class ChatController extends Controller
         		   ->select($exported_fields)
         		   ->get();
        	
-       	if(count($msgs) > 0)
-       	{
-	        return JSONResponse::response(200,$msgs);
-       	}
-       	else
-       	{
-       		return JSONResponse::response(200,$msgs);
-       	}
+       	//return Array even if it is empty
+   		return JSONResponse::response(200,$msgs);
     }
     public function createTaskMessages(Request $request)
     {
@@ -49,5 +43,37 @@ class ChatController extends Controller
         $user_msg = $request->input('user_msg');
         $task_id = $request->input('task_id');
 
+        $user_id = User::where('user_roll','=',$user_roll)
+        			   ->pluck('user_id');
+        
+        $msg = new Msg;
+        $msg->user_id = $user_id;
+        $msg->task_id = $task_id;
+        $msg->msg_data = $user_msg;
+    	
+    	$success = $msg->save();
+
+    	if(!$success)
+    	{
+	        return JSONResponse::response(200,false);
+    	}
+    
+    	// if success return the msg
+        $exported_fields = [
+        	"msg.msg_id",
+        	"msg.task_id",
+        	"users.user_name",
+        	"msg.created_at",
+        	"msg.msg_data",
+        ];
+
+    	$saved_msg = Msg::join('users','users.user_id','=','msg.user_id')
+				    	->where('msg_id','=',$msg->msg_id)
+				    	->select($exported_fields)
+				    	->get();
+
+
+        return JSONResponse::response(200,$saved_msg);
+    	
     }
 }
