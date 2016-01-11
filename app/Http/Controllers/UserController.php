@@ -42,4 +42,21 @@ class UserController extends Controller
     		return JSONResponse::response(401);
     	}
     }
+
+    public function profileGetDetails(Request $request)
+    {
+        $user_roll = $request->input('user_roll');
+
+        $user = User::where('user_roll','=',$user_roll)
+                    ->select('user_roll','user_name','user_phone','user_type')
+                    ->first();
+
+        if($user == NULL)
+        {
+            return JSONResponse::response(400);
+        }                
+        
+        return JSONResponse::response(200,$user);
+
+    }
 }

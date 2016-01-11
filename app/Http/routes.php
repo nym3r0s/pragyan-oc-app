@@ -27,6 +27,7 @@ $api->version('v1', function ($api) {
 
 $api->version('v1', ['middleware' => 'userauth'], function ($api) {
 
-	$api->get('/gcm/register', 'App\Http\Controllers\GcmController@register');
+	$api->post('/gcm/register', 'App\Http\Controllers\GcmController@register');
+	$api->post('/profile/getdetails', 'App\Http\Controllers\UserController@profileGetDetails');
 
 });
