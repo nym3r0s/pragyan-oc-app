@@ -61,4 +61,64 @@ class TaskController extends Controller
     	
     	return JSONResponse::response(200,$task);
     }
+
+    public function updateTask(Request $request)
+    {
+        $user_roll	= $request->input('user_roll');
+
+        $task_name = $request->input('task_name'); 
+        $task_id = $request->input('task_id'); 
+    	$team_id   = $request->input('team_id');
+
+    	if(!CheckLevel::check(2,NULL,$user_roll))
+    	{
+    		return JSONResponse::response(401);
+    	}
+
+    	//get user id
+    	$user_id = User::where('user_roll','=',$user_roll)
+        			   ->pluck('user_id');
+
+        $user = User::where('user_roll','=',$user_roll)
+        			->first();
+
+        if( $user->user_type != 1 && $user->user_type !=0)
+        {
+	    	$team_member = TeamMember::where('user_id','=',$user_id)
+	    							 ->where('team_id','=',$team_id)
+	    							 ->first();
+	    	if($team_member == NULL)
+	    	{
+	    		return JSONResponse::response(401);
+	    	}
+        }			
+
+    	
+    	$task = Task::where('task_id','=',$task_id)
+    				->first();
+    	if($task == NULL)
+    	{
+    		return JSONResponse::response(400);
+    	}
+    	else
+    	{
+    		// dd(json_encode($task));
+    	}
+
+    	$task->task_name = $task_name;
+    	$task->task_completed = 0;
+    	$task->team_id = $team_id;
+
+    	$success = $task->save();
+
+    	if(!$success)
+    	{
+    		return JSONResponse::response(200,false);
+    	}
+    	
+    	return JSONResponse::response(200,$task);
+
+    }
+
+
 }
