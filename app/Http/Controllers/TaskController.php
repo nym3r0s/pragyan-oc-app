@@ -31,20 +31,26 @@ class TaskController extends Controller
     	$user_id = User::where('user_roll','=',$user_roll)
         			   ->pluck('user_id');
 
-    	$team_member = TeamMember::where('user_id','=',$user_id)
-    							 ->where('team_id','=',$team_id)
-    							 ->first();
+        $user = User::where('user_roll','=',$user_roll)
+        			->first();
 
-    	if($team_member == NULL)
-    	{
-    		return JSONResponse::response(401);
-    	}
+        if( $user->user_type != 1 && $user->user_type !=0)
+        {
+	    	$team_member = TeamMember::where('user_id','=',$user_id)
+	    							 ->where('team_id','=',$team_id)
+	    							 ->first();
+	    	if($team_member == NULL)
+	    	{
+	    		return JSONResponse::response(401);
+	    	}
+        }			
+
     	
     	$task = new Task;
 
     	$task->task_name = $task_name;
     	$task->task_completed = 0;
-    	$task->team_id = $team_member->team_id;
+    	$task->team_id = $team_id;
 
     	$success = $task->save();
 
