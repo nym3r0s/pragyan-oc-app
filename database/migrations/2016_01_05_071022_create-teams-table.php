@@ -13,7 +13,7 @@ class CreateTeamsTable extends Migration
     public function up()
     {
         Schema::create('teams', function(Blueprint $table){
-            $table->integer('team_id')->unique()->primary();
+            $table->increments('team_id',true);
             $table->string('team_name',20);
         });
     }

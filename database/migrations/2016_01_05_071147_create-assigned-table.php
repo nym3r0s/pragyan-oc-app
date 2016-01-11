@@ -13,8 +13,8 @@ class CreateAssignedTable extends Migration
     public function up()
     {
         Schema::create('assigned', function(Blueprint $table){
-            $table->integer('task_id');
-            $table->integer('user_id');
+            $table->integer('task_id')->unsigned();
+            $table->integer('user_id')->unsigned();
         });
 
         Schema::table('assigned', function(Blueprint $table) {

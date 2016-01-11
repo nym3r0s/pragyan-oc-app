@@ -13,8 +13,8 @@ class CreateTeamMembersTable extends Migration
     public function up()
     {
         Schema::create('team_members', function(Blueprint $table){
-            $table->integer('user_id');
-            $table->integer('team_id');
+            $table->integer('user_id')->unsigned();
+            $table->integer('team_id')->unsigned();
         });
 
         Schema::table('team_members', function(Blueprint $table) {
