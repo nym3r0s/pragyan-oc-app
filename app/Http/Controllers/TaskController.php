@@ -123,7 +123,13 @@ class TaskController extends Controller
         $task_id = $request->input('task_id'); 
     	$team_id   = $request->input('team_id');
     	$task_status = $request->input('task_status');
-    	
+    	$valid_task_status = array(0,1,2);
+
+    	if(!in_array($task_status,$valid_task_status))
+    	{
+    		return JSONResponse::response(400);
+    	}
+
     	//get user id
     	$user_id = User::where('user_roll','=',$user_roll)
         			   ->pluck('user_id');
