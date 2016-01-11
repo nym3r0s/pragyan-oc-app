@@ -100,10 +100,6 @@ class TaskController extends Controller
     	{
     		return JSONResponse::response(400);
     	}
-    	else
-    	{
-    		// dd(json_encode($task));
-    	}
 
     	$task->task_name = $task_name;
     	$task->task_completed = 0;
@@ -120,5 +116,52 @@ class TaskController extends Controller
 
     }
 
+    public function updateTaskStatus(Request $request)
+    {
+    	$user_roll	= $request->input('user_roll');
+
+        $task_id = $request->input('task_id'); 
+    	$team_id   = $request->input('team_id');
+    	$task_status = $request->input('task_status');
+    	
+    	//get user id
+    	$user_id = User::where('user_roll','=',$user_roll)
+        			   ->pluck('user_id');
+
+        $user = User::where('user_roll','=',$user_roll)
+        			->first();
+
+        // Make sure that the guy is part of the team
+        if( $user->user_type != 1 && $user->user_type !=0)
+        {
+	    	$team_member = TeamMember::where('user_id','=',$user_id)
+	    							 ->where('team_id','=',$team_id)
+	    							 ->first();
+	    	if($team_member == NULL)
+	    	{
+	    		return JSONResponse::response(401);
+	    	}
+        }	
+
+
+    	$task = Task::where('task_id','=',$task_id)
+    				->first();
+    	if($task == NULL)
+    	{
+    		return JSONResponse::response(400);
+    	}
+
+    	$task->task_completed = $task_status;
+
+    	$success = $task->save();
+
+    	if(!$success)
+    	{
+    		return JSONResponse::response(200,false);
+    	}
+    	
+    	return JSONResponse::response(200,$task);
+
+    }
 
 }
