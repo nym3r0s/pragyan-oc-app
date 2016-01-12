@@ -21,7 +21,6 @@ $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', function ($api) {
 	$api->post('/login', 'App\Http\Controllers\UserController@login');
-	$api->get('/send', 'App\Http\Controllers\GcmController@dummy');
 });
 
 // The routes which will need authentication in the form of client secret
