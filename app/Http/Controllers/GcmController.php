@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Helpers\JSONResponse;
+use App\Helpers\Push;
 
 use App\User;
 
@@ -30,5 +31,9 @@ class GcmController extends Controller
 
 		return JSONResponse::response(200,true);
 
+	}
+	public function dummy()
+	{
+		Push::notify(106114045,"asdfasd");
 	}
 }

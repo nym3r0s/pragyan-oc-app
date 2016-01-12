@@ -2,15 +2,15 @@
 
 return array(
 
-    'appNameIOS'     => array(
-        'environment' =>'development',
-        'certificate' =>'/path/to/certificate.pem',
-        'passPhrase'  =>'password',
-        'service'     =>'apns'
-    ),
+    // 'appNameIOS'     => array(
+    //     'environment' =>'development',
+    //     'certificate' =>'/path/to/certificate.pem',
+    //     'passPhrase'  =>'password',
+    //     'service'     =>'apns'
+    // ),
     'appNameAndroid' => array(
         'environment' =>'production',
-        'apiKey'      =>'yourAPIKey',
+        'apiKey'      => env('GCM_SERVER_API_KEY', 'gcmServerApiKey'),
         'service'     =>'gcm'
     )
 
