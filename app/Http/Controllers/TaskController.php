@@ -191,16 +191,38 @@ class TaskController extends Controller
         	'team_name',
         ];
 
-    	$task_list = Assigned::where('user_id','=',$user_id)
-    						->leftJoin('tasks','assigned.task_id','=','tasks.task_id')
-    						->leftJoin('teams','tasks.team_id','=','teams.team_id')
-		        			->where('tasks.enabled','=',true)
-    						->select($exported_fields)
-    						->get();
+        $user = User::where('user_roll','=',$user_roll)
+                    ->first();
+
+        if($user->user_type == 3)
+        {
+        	$task_list = Assigned::where('user_id','=',$user_id)
+        						->leftJoin('tasks','assigned.task_id','=','tasks.task_id')
+        						->leftJoin('teams','tasks.team_id','=','teams.team_id')
+    		        			->where('tasks.enabled','=',true)
+        						->select($exported_fields)
+        						->get();
 
 
 
-    	return JSONResponse::response(200,$task_list);
+        	return JSONResponse::response(200,$task_list);
+        }
+
+        else
+        {
+            $team_list = TeamMember::where('user_id','=',$user_id)
+                                   ->select('team_id')
+                                   ->lists('team_id');    
+            $task_list = Task::leftJoin('teams','tasks.team_id','=','teams.team_id')
+                                ->where('tasks.enabled','=',true)
+                                ->whereIn('tasks.team_id',$team_list)
+                                ->select($exported_fields)
+                                ->get();
+
+
+
+            return JSONResponse::response(200,$task_list);
+        }
     }
 
     public function assignPeople(Request $request)
@@ -227,7 +249,7 @@ class TaskController extends Controller
     	}
 
         $user_list = User::leftJoin('team_members','team_members.user_id','=','users.user_id')
-        				 ->whereIn('users.user_id',$assigned_ids)
+        				 ->whereIn('users.user_roll',$assigned_ids)
         				 ->where('team_members.team_id','=',$task->team_id)
         				 ->get();
 

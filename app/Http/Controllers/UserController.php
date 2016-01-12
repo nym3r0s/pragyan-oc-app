@@ -10,6 +10,8 @@ use App\Helpers\JSONResponse;
 use App\Helpers\LDAPAuth;
 use App\Helpers\IMAPAuth;
 use App\User;
+use App\Teams;
+use App\TeamMember;
 
 class UserController extends Controller
 {
@@ -56,6 +58,14 @@ class UserController extends Controller
             return JSONResponse::response(400);
         }                
         
+        $user_id = User::where('user_roll','=',$user_roll)
+                       ->pluck('user_id');
+
+        $team_details = TeamMember::where('user_id','=',$user_id)
+                                  ->join('teams','team_members.team_id','=','teams.team_id')
+                                  ->select('teams.team_id','team_name')
+                                  ->get();
+        $user->user_teams = $team_details;
         return JSONResponse::response(200,$user);
 
     }
