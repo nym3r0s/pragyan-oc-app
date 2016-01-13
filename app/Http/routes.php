@@ -41,5 +41,6 @@ $api->version('v1', ['middleware' => 'userauth'], function ($api) {
 	$api->post('/task/all','App\Http\Controllers\TaskController@getAllTasks');
 	$api->post('/task/assign','App\Http\Controllers\TaskController@assignPeople');
 	$api->post('/task/delete','App\Http\Controllers\TaskController@deleteTask');
+	$api->post('/task/target/all','App\Http\Controllers\TaskController@getUsersTasks');
 
 });

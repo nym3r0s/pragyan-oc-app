@@ -185,7 +185,6 @@ class TaskController extends Controller
         $exported_fields = [
         	'tasks.task_id',
         	'task_name',
-        	'task_name',
         	'task_completed',
         	'teams.team_id',
         	'team_name',
@@ -294,5 +293,34 @@ class TaskController extends Controller
     	$task->save();
 
     	return JSONResponse::response(200,true);
+    }
+    public function getUsersTasks(Request $request)
+    {
+        $user_roll  = $request->input('user_target_roll');
+
+        $user_id = User::where('user_roll','=',$user_roll)
+                       ->pluck('user_id');
+
+        $exported_fields = [
+            'tasks.task_id',
+            'task_name',
+            'task_completed',
+            'teams.team_id',
+            'team_name',
+        ];
+
+        $user = User::where('user_roll','=',$user_roll)
+                    ->first();
+
+        
+        $task_list = Assigned::where('user_id','=',$user_id)
+                            ->leftJoin('tasks','assigned.task_id','=','tasks.task_id')
+                            ->leftJoin('teams','tasks.team_id','=','teams.team_id')
+                            ->where('tasks.enabled','=',true)
+                            ->select($exported_fields)
+                            ->get();
+
+        return JSONResponse::response(200,$task_list);
+        
     }
 }

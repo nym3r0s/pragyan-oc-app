@@ -228,3 +228,27 @@ task_id : the task
     }
   ]
 }
+
+/task/target/all
+
+user_target_roll: roll no of the guy whose tasks you want
+
+{
+  "status_code": 200,
+  "message": [
+    {
+      "task_id": 1,
+      "task_name": "Task 1",
+      "task_completed": "0",
+      "team_id": 1,
+      "team_name": "dummy team 1"
+    },
+    {
+      "task_id": 3,
+      "task_name": "Google oiuqwer",
+      "task_completed": "0",
+      "team_id": 1,
+      "team_name": "dummy team 1"
+    }
+  ]
+}
