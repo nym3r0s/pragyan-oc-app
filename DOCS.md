@@ -252,3 +252,25 @@ user_target_roll: roll no of the guy whose tasks you want
     }
   ]
 }
+
+/task/getassigned
+
+task_id
+
+{
+  "status_code": 200,
+  "message": [
+    {
+      "user_roll": "107113071",
+      "user_name": "Test"
+    },
+    {
+      "user_roll": "106113097",
+      "user_name": "Gokul"
+    },
+    {
+      "user_roll": "123123123",
+      "user_name": "asdf"
+    }
+  ]
+}

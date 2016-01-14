@@ -323,4 +323,16 @@ class TaskController extends Controller
         return JSONResponse::response(200,$task_list);
         
     }
+
+    public function getAssignedForTask(Request $request)
+    {
+        $task_id = $request->input('task_id');
+
+        $user_list = Assigned::where('task_id','=',$task_id)
+                             ->leftJoin('users','assigned.user_id','=','users.user_id')
+                             ->select('users.user_roll','users.user_name')
+                             ->get();
+
+        return JSONResponse::response(200,$user_list);
+    }
 }
