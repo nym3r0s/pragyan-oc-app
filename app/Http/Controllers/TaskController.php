@@ -257,6 +257,13 @@ class TaskController extends Controller
     		return JSONResponse::response(400);
     	}
 
+        // Remove existing assigned and overwrite it with the new list
+        // Dev can know who are assigned with method getAssignedForTask
+        
+        //Delete the existing ones
+        $success = Assigned::where('task_id','=',$task_id)
+                           ->delete();
+        //Insert the new ones
     	foreach ($user_list as $key => $user)
     	{
     		// echo "\ninserting".$task_id." ".$user->user_id;

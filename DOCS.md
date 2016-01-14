@@ -158,6 +158,10 @@ Note: remember that task_status is task_completed
 task_id : the id of the task
 assigned_list : the list of roll numbers assigned to this task (eg) "106114045,107113112"
 
+NOTE: This method overwrites the previously assigned people to this task.
+It is wise to call `/task/getassigned` before sending the request as you can then amend 
+the list of roll numbers assigned to the task.
+
 {
   "status_code": 200,
   "message": true
