@@ -278,3 +278,106 @@ task_id
     }
   ]
 }
+
+## Format for the push notifications
+
+{
+  "type":"message",
+  "message": { 
+  }
+}
+
+`message` will be what you get as `message` in 
+any other path.
+
+Types (field `type`)
+
+
+* `message`
+
+When a new message in the chat for a task arrives, 
+a push notification is sent to the mobile to all
+the assigned members
+
+{
+  "type": "message",
+  "message": {
+    "msg_id": 24,
+    "task_id": 1,
+    "user_name": "Gokul",
+    "created_at": "2016-01-15 19:44:22",
+    "msg_data": "Hey New push 2"
+  }
+}
+
+* `newtask`
+
+When a task is assigned to the user,
+a push notification is sent to the assigned users.
+
+{
+  "type": "message",
+  "message": {
+    "task_id": 6,
+    "task_name": "Get bulbs from Thuva",
+    "task_completed": "0",
+    "team_id": 1,
+    "enabled": 1,
+    "created_at": "2016-01-12 19:52:32",
+    "updated_at": "2016-01-12 20:06:01"
+  }
+}
+
+* `taskstatusupdate`
+
+When the status of the task is updated
+a push notification is sent to assigned with this json
+
+{
+  "type": "taskstatusupdate",
+  "message": {
+    "task_id": 3,
+    "task_name": "Google oiuqwer",
+    "task_completed": "1",
+    "team_id": 1,
+    "enabled": 1,
+    "created_at": "2016-01-11 06:25:28",
+    "updated_at": "2016-01-15 20:13:36"
+  }
+}
+
+* `taskupdate`
+
+When the task in itself (task_name etc) is updated,
+a push notification is sent to assigned with this json
+
+{
+  "type": "taskupdate",
+  "message": {
+    "task_id": 3,
+    "task_name": "Google asljksf ad",
+    "task_completed": 0,
+    "team_id": "1",
+    "enabled": 1,
+    "created_at": "2016-01-11 06:25:28",
+    "updated_at": "2016-01-15 20:16:30"
+  }
+}
+
+* `taskdelete`
+
+When the task is deleted,
+a push notification is sent to assigned with this json
+
+{
+  "type": "taskdelete",
+  "message": {
+    "task_id": 3,
+    "task_name": "Google asljksf ad",
+    "task_completed": "0",
+    "team_id": 1,
+    "enabled": false,
+    "created_at": "2016-01-11 06:25:28",
+    "updated_at": "2016-01-15 20:21:51"
+  }
+}

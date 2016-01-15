@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Helpers\JSONResponse;
+use App\Helpers\Push;
 use App\Helpers\CheckLevel;
 use App\User;
 use App\Task;
@@ -113,7 +114,17 @@ class TaskController extends Controller
     	{
     		return JSONResponse::response(200,false);
     	}
-    	
+        
+
+        // Push Notification Code starts here
+        $task_user_rolls = Assigned::where('task_id','=',$task_id)
+                                   ->leftJoin('users','assigned.user_id','=','users.user_id')
+                                   ->lists('user_roll');
+
+        $push_message = Push::jsonEncode('taskupdate',$task);
+        Push::sendMany($task_user_rolls,$push_message);
+        // Push Notification Code ends here
+
     	return JSONResponse::response(200,$task);
 
     }
@@ -168,8 +179,17 @@ class TaskController extends Controller
     	{
     		return JSONResponse::response(200,false);
     	}
+        
+        // Push Notification Code starts here
+        $task_user_rolls = Assigned::where('task_id','=',$task_id)
+                                   ->leftJoin('users','assigned.user_id','=','users.user_id')
+                                   ->lists('user_roll');
+
+        $push_message = Push::jsonEncode('taskstatusupdate',$task);
+        Push::sendMany($task_user_rolls,$push_message);
+        // Push Notification Code ends here
     	
-    	return JSONResponse::response(200,$task);
+        return JSONResponse::response(200,$task);
 
     }
 
@@ -274,6 +294,16 @@ class TaskController extends Controller
     		// echo "\n".$success;
 		}	
 
+
+        // Push Notification Code starts here
+        $task_user_rolls = Assigned::where('task_id','=',$task_id)
+                                   ->leftJoin('users','assigned.user_id','=','users.user_id')
+                                   ->lists('user_roll');
+
+        $push_message = Push::jsonEncode('newtask',$task);
+        Push::sendMany($task_user_rolls,$push_message);
+        // Push Notification Code ends here
+
 		return JSONResponse::response(200,true);
     }
     public function deleteTask(Request $request)
@@ -298,6 +328,15 @@ class TaskController extends Controller
 
     	$task->enabled = false;
     	$task->save();
+
+        // Push Notification Code starts here
+        $task_user_rolls = Assigned::where('task_id','=',$task_id)
+                                   ->leftJoin('users','assigned.user_id','=','users.user_id')
+                                   ->lists('user_roll');
+
+        $push_message = Push::jsonEncode('taskdelete',$task);
+        Push::sendMany($task_user_rolls,$push_message);
+        // Push Notification Code ends here
 
     	return JSONResponse::response(200,true);
     }

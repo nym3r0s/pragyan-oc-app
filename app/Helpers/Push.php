@@ -21,20 +21,20 @@ class Push
 	 */
 	public static function notify($user_roll, $message=NULL)
 	{
-		$user = User::where('user_roll','=',$user_roll)
-					->first();
-
-		$user_gcmid = $user->user_gcmid;
-
 		try 
 		{
+
+			$user = User::where('user_roll','=',$user_roll)
+						->first();
+
+			$user_gcmid = $user->user_gcmid;
 			PushNotification::app('appNameAndroid')
 			                ->to($user_gcmid)
 			                ->send($message);
 		}
 		catch(Exception $e)
 		{
-			Log::info("Push failed for ".$user_roll." with Message\n".json_encode($message));
+			Log::info("Push failed for ".json_encode($user)." with Message\n".json_encode($message));
 		}
 
 	}
@@ -48,6 +48,12 @@ class Push
 		return json_encode($jsonObject); 
 	}
 
+	/**
+	 * [sendMany description]
+	 * @param  [type] $rollnums [Make sure it is iterable. Else use notify]
+	 * @param  [type] $message  [json encoded message. use Push::jsonEncode]
+	 * @return [type]           [description]
+	 */
 	public static function sendMany($rollnums = NULL,$message = NULL)
 	{
 		// If rollnum is not specified, return
@@ -56,18 +62,9 @@ class Push
 			return;
 		}
 
-		// Check if only one roll number is sent.
-		if(!is_array($rollnums))
+		foreach ($rollnums as $rollnum)
 		{
-			Push::notify($rollnums, $message);
-		}
-		// Loop through the roll numbers and send the message to each and every one of them
-		else 
-		{
-			foreach ($rollnums as $rollnum)
-			{
-				Push::notify($rollnum, $message);
-			}
+			Push::notify($rollnum, $message);
 		}
 	}
 }

@@ -32,8 +32,4 @@ class GcmController extends Controller
 		return JSONResponse::response(200,true);
 
 	}
-	public function dummy()
-	{
-		Push::notify(106114045,"asdfasd");
-	}
 }

@@ -8,8 +8,11 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Helpers\JSONResponse;
+use App\Helpers\Push;
 use App\Msg;
 use App\User;
+use App\Assigned;
+
 
 class ChatController extends Controller
 {
@@ -70,8 +73,16 @@ class ChatController extends Controller
     	$saved_msg = Msg::join('users','users.user_id','=','msg.user_id')
 				    	->where('msg_id','=',$msg->msg_id)
 				    	->select($exported_fields)
-				    	->get();
+				    	->first();
 
+        // Push Notification Code starts here
+        $task_user_rolls = Assigned::where('task_id','=',$task_id)
+                                   ->leftJoin('users','assigned.user_id','=','users.user_id')
+                                   ->lists('user_roll');
+
+        $push_message = Push::jsonEncode('message',$saved_msg);
+        Push::sendMany($task_user_rolls,$push_message);
+        // Push Notification Code ends here
 
         return JSONResponse::response(200,$saved_msg);
     	
