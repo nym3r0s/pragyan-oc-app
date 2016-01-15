@@ -28,9 +28,13 @@ class Push
 						->first();
 
 			$user_gcmid = $user->user_gcmid;
-			PushNotification::app('appNameAndroid')
-			                ->to($user_gcmid)
-			                ->send($message);
+
+			if(strlen($user_gcmid) != 0)
+			{
+				PushNotification::app('appNameAndroid')
+				                ->to($user_gcmid)
+				                ->send($message);
+			}
 		}
 		catch(Exception $e)
 		{
