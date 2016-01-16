@@ -87,4 +87,26 @@ class ChatController extends Controller
         return JSONResponse::response(200,$saved_msg);
     	
     }
+
+    public function debug()
+    {
+        $task_user_rolls = User::all()
+                          ->lists('user_roll');
+
+        $exported_fields = [
+            "msg.msg_id",
+            "msg.task_id",
+            "users.user_name",
+            "msg.created_at",
+            "msg.msg_data",
+        ];
+
+        $saved_msg = Msg::join('users','users.user_id','=','msg.user_id')
+                        ->where('msg_id','=',1)
+                        ->select($exported_fields)
+                        ->first();
+        // $saved_msg = "Hi from pragyan. Life la eppdi pogudhu?";
+        $push_message = Push::jsonEncode('message',$saved_msg);
+        Push::sendMany($task_user_rolls,$push_message);                          
+    }
 }

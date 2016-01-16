@@ -34,6 +34,7 @@ class Push
 				PushNotification::app('appNameAndroid')
 				                ->to($user_gcmid)
 				                ->send($message);
+				Log::notice("\n\nSent Message:\n".$user_roll."\n".$message."\n");
 			}
 		}
 		catch(Exception $e)
