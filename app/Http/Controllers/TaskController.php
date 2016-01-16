@@ -222,7 +222,13 @@ class TaskController extends Controller
         						->select($exported_fields)
         						->get();
 
-
+            foreach ($task_list as $task_list_task)
+            {
+                $task_user_rolls = Assigned::where('task_id','=',$task_list_task->task_id)
+                                   ->leftJoin('users','assigned.user_id','=','users.user_id')
+                                   ->lists('user_roll');
+                $task_list_task->assigned = $task_user_rolls;
+            }
 
         	return JSONResponse::response(200,$task_list);
         }
@@ -238,6 +244,13 @@ class TaskController extends Controller
                                 ->select($exported_fields)
                                 ->get();
 
+            foreach ($task_list as $task_list_task)
+            {
+                $task_user_rolls = Assigned::where('task_id','=',$task_list_task->task_id)
+                                   ->leftJoin('users','assigned.user_id','=','users.user_id')
+                                   ->lists('user_roll');
+                $task_list_task->assigned = $task_user_rolls;
+            }
 
 
             return JSONResponse::response(200,$task_list);
