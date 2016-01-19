@@ -74,8 +74,15 @@ class UserController extends Controller
         $user_roll = $request->input('user_roll');
         
         $users = User::where('user_roll','!=',$user_roll)
-                     ->select('user_roll','user_name','user_phone','user_type')
+                     ->select('user_id','user_roll','user_name','user_phone','user_type')
                      ->get();
+        
+        foreach ($users as $user)
+        {
+            $teams = TeamMember::where('user_id','=',$user->user_id)
+                               ->lists('team_id');
+            $user->teams = $teams;
+        }        
         return JSONResponse::response(200,$users);
     }
 }
